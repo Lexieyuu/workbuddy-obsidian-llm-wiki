@@ -47,8 +47,6 @@ wiki/
 ├── sources/           单个来源的摘要与观点
 ├── entities/          人物、公司、模型、工具、产品、项目
 ├── concepts/          概念、方法论、技术与架构
-├── comparisons/       多个模型、工具或方法的对比
-├── overview/          主题总览和导航页面
 └── syntheses/         跨来源综合研究报告
 ```
 
@@ -120,7 +118,7 @@ tags: []
 `type` 可使用：
 
 ```text
-source | concept | entity | comparison | overview | synthesis
+source | concept | entity | synthesis
 ```
 
 `status` 可使用：
@@ -166,14 +164,12 @@ draft | verified | needs-review | archived
 | `source` | 记录一篇文章、论文、视频或会议资料的摘要 | `wiki/sources/` |
 | `concept` | 记录概念、方法、理论或架构模式 | `wiki/concepts/` |
 | `entity` | 记录人物、公司、模型、工具或项目 | `wiki/entities/` |
-| `comparison` | 对多个模型、工具或方法进行比较 | `wiki/comparisons/` |
-| `overview` | 主题导航、知识地图和目录 | `wiki/overview/` |
 | `synthesis` | 综合多个来源形成研究报告 | `wiki/syntheses/` |
 
 命名规则：
 
 - Entity 页面使用稳定、清晰的 TitleCase 名称，例如 `ClaudeCode.md`。
-- Source、Concept、Comparison、Overview 和 Synthesis 页面使用 kebab-case，例如 `摘要-claude-code.md`。
+- Source、Concept 和 Synthesis 页面使用 kebab-case，例如 `摘要-claude-code.md`。
 - 文件名应保持稳定；不要因为措辞变化随意重命名已有页面。
 
 ## 6. 链接与引用规则
@@ -199,12 +195,6 @@ draft | verified | needs-review | archived
 
 ## Concepts
 - [[ConceptName]] — 一句话说明概念
-
-## Comparisons
-- [[comparison-slug]] — 一句话说明比较主题
-
-## Overviews
-- [[overview-slug]] — 一句话说明主题范围
 
 ## Syntheses
 - [[synthesis-slug]] — 一句话说明综合问题

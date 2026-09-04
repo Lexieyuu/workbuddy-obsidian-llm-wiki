@@ -3,8 +3,8 @@ title: "WorkBuddy"
 type: entity
 status: verified
 sources:
-  - raw/01-articles/workbuddy-official-product.md
-  - raw/01-articles/workbuddy-official-skills.md
+  - "[[摘要-workbuddy-official-product]]"
+  - "[[摘要-workbuddy-official-skills]]"
 created: 2026-09-02
 updated: 2026-09-02
 tags: [AI, workplace, agent]

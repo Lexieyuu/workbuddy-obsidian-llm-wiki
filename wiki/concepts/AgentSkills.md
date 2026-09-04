@@ -3,8 +3,8 @@ title: "AgentSkills"
 type: concept
 status: verified
 sources:
-  - raw/01-articles/workbuddy-official-skills.md
-  - raw/01-articles/codebuddy-official-skills-format.md
+  - "[[摘要-workbuddy-official-skills]]"
+  - "[[摘要-codebuddy-official-skills-format]]"
 created: 2026-09-02
 updated: 2026-09-02
 tags: [skill, workflow, workbuddy]

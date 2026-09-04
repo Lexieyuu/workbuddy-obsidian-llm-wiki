@@ -1,87 +1,31 @@
 ---
 name: ingest
-description: 将 LLM Wiki Vault 的 raw/ 原始资料整理成 wiki/ 知识页，并维护索引与日志。当用户要求导入、整理、摄取文章、论文、PDF、转录或笔记时使用；也支持 /ingest 和 /ingest <路径>。
+description: 将 raw/ 原始资料整理成 wiki/ 知识页，并维护索引与实际变更日志；支持 /ingest 和 /ingest <路径>。
 allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 user-invocable: true
 ---
 
 # LLM Wiki 资料导入
 
-将原始资料编译为结构化、可引用、相互链接的 Obsidian 知识页。
-
-## 目录约定
-
-- `raw/01-articles/`：网页剪藏和 Markdown 文章
-- `raw/02-papers/`：论文、报告和 PDF
-- `raw/03-transcripts/`：视频、播客和会议转录
-- `raw/09-archive/`：已处理资料；绝对不要读取
-- `wiki/sources/`：每份原始资料的摘要
-- `wiki/entities/`：人物、公司、工具、产品
-- `wiki/concepts/`：概念、框架、方法论
-- `wiki/syntheses/`：综合研究报告
-
-先定位当前 Vault 根目录。所有路径均相对于 Vault 根目录，不要把 Skill 自身目录当作 Vault。
+将原始资料编译为结构化、可引用、相互链接的 Obsidian 知识页。目录、页面 Schema、来源字段、权限和日志规则统一遵循仓库根目录的 `CODEBUDDY.md`，本 Skill 不重复定义它们。
 
 ## 工作流程
 
-1. 确认输入路径。没有指定路径时，扫描 `raw/`，但排除 `raw/09-archive/`。
-2. 完整读取原始文件。Markdown 读取全文；PDF 尽量提取文本，无法提取时记录文件名和页数，不编造内容。
-3. 提取核心主旨、实体和概念；非中文资料翻译成简体中文。
-4. 在 `wiki/sources/` 创建或更新来源摘要。
-5. 为每个实体和概念创建页面，或读取旧页面后增量合并；不要静默覆盖旧信息。
-6. 在每个页面加入 `## 关联连接`，使用 `[[页面名称]]` 建立链接。
-7. 更新 `wiki/index.md` 和 `wiki/log.md`。
-8. 只有在上述页面、索引和日志都成功写入后，才将源文件移动到 `raw/09-archive/`；移动前向用户说明将归档哪些文件并请求确认。
-
-## 来源摘要模板
-
-```markdown
----
-title: "摘要-文件-slug"
-type: source
-tags: [来源, 原始文件]
-sources: [raw/01-articles/example.md]
-last_updated: YYYY-MM-DD
----
-
-## 核心摘要
-用 3-5 句话总结资料。
-
-## 关联连接
-- [[EntityName]] — 关联实体
-- [[ConceptName]] — 关联概念
-```
-
-文件名使用 kebab-case，例如 `摘要-某篇文章.md`。
-
-## 实体/概念页面模板
-
-```markdown
----
-title: "页面名称"
-type: entity
-tags: [标签]
-sources: [raw/01-articles/example.md]
-last_updated: YYYY-MM-DD
----
-
-## 定义
-
-## 关键信息
-
-## 关联连接
-- [[摘要-文件-slug]] — 来源
-```
-
-实体放入 `wiki/entities/`，概念放入 `wiki/concepts/`。实体使用 TitleCase；概念和来源使用 kebab-case。
+1. 定位当前 Vault 根目录。没有指定路径时扫描 `raw/`，排除 `raw/09-archive/`。
+2. 完整读取原始文件；无法提取的内容明确标注未知，不编造。
+3. 识别来源、核心主旨、实体、概念、比较关系和待确认问题。
+4. 创建或增量更新对应 Source 页面，并在页面中保存来源元数据；其他页面的 `sources` 只引用该 Source 页面。
+5. 创建或更新合适的 Concept、Entity、Comparison、Overview 或 Synthesis 页面，保留已有内容并建立 `[[双链]]`。
+6. 更新 `wiki/index.md`；仅当确有实际变更时按 `CODEBUDDY.md` 规则追加 `wiki/log.md`。
+7. 所有页面、Index 和 Log 写入成功后，向用户说明待归档文件并请求确认；未经确认不得移动到 `raw/09-archive/`。
 
 ## 冲突处理
 
-发现新旧知识冲突时暂停当前导入，明确展示冲突双方，询问用户选择：保留并标注冲突、采用新信息、或放弃本次导入。不得静默覆盖。
+发现新旧知识冲突时暂停相关导入，展示冲突双方和来源，询问用户是保留并标注冲突、采用新信息，还是放弃本次导入。不得静默覆盖。
 
-## 硬约束
+## 约束
 
-- 不读取 `raw/09-archive/`。
+- 不读取或修改 `raw/09-archive/` 中的内容。
 - 不修改原始文件内部文字。
-- 所有生成页面使用简体中文并包含 YAML frontmatter。
-- 新增页面必须同步更新 `wiki/index.md` 和 `wiki/log.md`。
+- 不把 AI 推测写入“我的标注”或“我的理解”。AI 生成内容放入“AI 分析”，并标明依据。
+- 不擅自将页面标记为 `verified`。

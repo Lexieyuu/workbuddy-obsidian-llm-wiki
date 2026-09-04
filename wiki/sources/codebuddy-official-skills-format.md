@@ -2,8 +2,11 @@
 title: "摘要-codebuddy-official-skills-format"
 type: source
 status: verified
-sources:
-  - raw/01-articles/codebuddy-official-skills-format.md
+sources: []
+source_url: "https://cloud.tencent.com/document/product/1831/137020"
+raw_path: "raw/01-articles/codebuddy-official-skills-format.md"
+author: "腾讯云官方文档"
+published: "未知"
 created: 2026-09-02
 updated: 2026-09-02
 tags: [codebuddy, workbuddy, skill, format]
